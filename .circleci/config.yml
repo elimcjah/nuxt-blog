@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   build:
-    working_directory: ~/repo
+    working_directory: ~/dist
     docker:
       - image: circleci/node:10.16.3
     steps:
@@ -18,3 +18,13 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
+      - deploy_project:
+          executor: aws-cli/default
+          steps:
+            - attach_workspace:
+                at: .
+            - aws-cli/setup:
+                profile-name: default
+            - run:
+                name: Upload file to S3
+                command: aws s3 sync ./dist/ s3://elijahmcclendon.com --delete
