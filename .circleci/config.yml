@@ -26,9 +26,8 @@ jobs:
           root: ~/
           paths:
             - project/build
-
-            - attach_workspace:
-                at: ~/
+      - attach_workspace:
+          at: ~/
       - aws-s3/sync:
           arguments: |
             --acl public-read \
