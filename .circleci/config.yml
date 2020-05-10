@@ -23,12 +23,19 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
-      - deploy:
-          name: deploy to AWS
-          command: |
-            if [ "${CIRCLE_BRANCH}" = "master" ]; then
-              aws s3 sync ./dist \
-              s3://elijahmcclendon.com --delete
-            else
-              echo "Not master branch, dry run only"
-            fi
+      - aws-s3/sync:
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: AWS_REGION
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          from: bucket
+          overwrite: true
+          to: 's3://elijahmcclendon.com'
+            - aws-s3/copy:
+                arguments: '--dry-run'
+                from: dist/
+                to: 's3://elijahmcclendon.com'
+
+
