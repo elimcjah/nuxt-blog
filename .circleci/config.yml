@@ -5,6 +5,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:erbium
+    working_directory: ~/circleci-temp
     steps:
       - checkout
       - run:
@@ -23,6 +24,6 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          cd workspace
-          aws s3 sync --cache-control 'max-age=604800' --exclude index.html build/ s3://elijahmcclendon.com/
-          aws s3 sync --cache-control 'no-cache' build/ s3://elijahmcclendon.com/
+          cd circleci-temp
+          aws s3 sync --cache-control 'max-age=604800' --exclude index.html dist/ s3://elijahmcclendon.com/
+          aws s3 sync --cache-control 'no-cache' dist/ s3://elijahmcclendon.com/
