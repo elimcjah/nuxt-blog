@@ -1,6 +1,9 @@
 version: 2.1
 jobs:
   build:
+    working_directory: ~/dist
+    docker:
+      - image: circleci/node:10.16.3
     steps:
       - checkout
       - run:
@@ -12,10 +15,18 @@ jobs:
           name: install-packages
           command: npm install
       - run:
-          name: generate spa
+          name: generate spa files
           command: npm run generate
       - save_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
-
+      - deploy:
+          name: deploy to AWS
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              aws s3 sync ./dist \
+              s3://your-bucket-name/your-subfolder --delete
+            else
+              echo "Not master branch, dry run only"
+            fi
