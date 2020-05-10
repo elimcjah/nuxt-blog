@@ -26,7 +26,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" = "master" ]; then
               aws s3 sync ./dist \
-              s3://your-bucket-name/your-subfolder --delete
+              s3://elijahmcclendon.com --delete
             else
               echo "Not master branch, dry run only"
             fi
