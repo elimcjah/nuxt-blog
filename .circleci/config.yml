@@ -3,9 +3,7 @@ orbs:
   aws-cli: circleci/aws-cli@1.0.0
 jobs:
   build:
-    working_directory: ~/dist
-    docker:
-      - image: circleci/node:10.16.3
+    working_directory: ~/circle-tmp-folder
     steps:
       - checkout
       - run:
@@ -33,9 +31,9 @@ jobs:
           from: bucket
           overwrite: true
           to: 's3://elijahmcclendon.com'
-            - aws-s3/copy:
-                arguments: '--dry-run'
-                from: dist/
-                to: 's3://elijahmcclendon.com'
+      - aws-s3/copy:
+          arguments: '--dry-run'
+          from: dist/
+          to: 's3://elijahmcclendon.com'
 
 
