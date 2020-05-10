@@ -3,7 +3,7 @@
     <div>
       <logo />
       <h1 class="title">
-        Elijah MAC
+        Elijah McClendon
       </h1>
       <h2 class="subtitle">
         Software Engineer

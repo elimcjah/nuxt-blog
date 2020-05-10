@@ -1,44 +1,26 @@
-version: 2.1
-orbs:
-  aws-s3: circleci/aws-s3@1.0.15
-jobs:
-  build:
-    docker:
-      - image: circleci/node:erbium
-    steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: "sudo npm install -g npm@5"
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-      - run:
-          name: install-packages
-          command: npm install
-      - run:
-          name: generate spa files
-          command: npm run generate
-      - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/dist
-      - attach_workspace:
-          at: ~/
-      - aws-s3/sync:
-          arguments: |
-            --acl public-read \
-            --cache-control "max-age=86400"
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-region: AWS_DEFAULT_REGION
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: bucket
-          overwrite: true
-          to: 's3://elijahmcclendon.com/'
-      - aws-s3/copy:
-          arguments: '--dry-run'
-          from: bucket
-          to: 's3://elijahmcclendon.com/'
+#version: 2.1
+#orbs:
+#  aws-cli: circleci/aws-cli@1.0.0
+#jobs:
+#  build:
+#    working_directory: ~/dist
+#    docker:
+#      - image: circleci/node:10.16.3
+#    steps:
+#      - checkout
+#      - run:
+#          name: update-npm
+#          command: "sudo npm install -g npm@5"
+#      - restore_cache:
+#          key: dependency-cache-{{ checksum "package-lock.json" }}
+#      - run:
+#          name: install-packages
+#          command: npm install
+#      - run:
+#          name: generate spa files
+#          command: npm run generate
+#      - save_cache:
+#          key: dependency-cache-{{ checksum "package-lock.json" }}
+#          paths:
+#            - ./node_modules
+
