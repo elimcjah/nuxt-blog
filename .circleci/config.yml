@@ -40,5 +40,5 @@ jobs:
           to: 's3://elijahmcclendon.com/'
       - aws-s3/copy:
           arguments: '--dry-run'
-          from: bucket/build_asset.txt
+          from: bucket
           to: 's3://elijahmcclendon.com/'
