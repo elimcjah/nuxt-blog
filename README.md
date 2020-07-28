@@ -1,4 +1,4 @@
-# nuxt-blog
+# Elijah
 
 > The personal blog of Elijah McClendon
 
